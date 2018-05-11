@@ -26,10 +26,17 @@ public class Graph {
 		return e;
 	}
 
+	Aresta addAresta(Vertice origem, Vertice destino, double weight) {
+		Aresta e = new Aresta(origem, destino, weight);
+		origem.addAdj(e);
+		this.arestas.add(e);
+		return e;
+	}
+	
 	public String toStringAL() {
 		String saida = "";
 		for (Vertice x : this.vertices) {
-			saida += x.nome + " - ";
+			saida += x.nome + " -> ";
 			for (Aresta e : x.adj) {
 				Vertice v = e.destino;
 				saida += v.nome + " ";
@@ -61,7 +68,7 @@ public class Graph {
 			return this.toStringAL();
 		}
 		else if(type.equals(RepresentationType.AM)){
-			return "fazer esta representação";
+			return "fazer esta representaï¿½ï¿½o";
 		}
 		throw new RuntimeException("Not a valid representation!");
 	}

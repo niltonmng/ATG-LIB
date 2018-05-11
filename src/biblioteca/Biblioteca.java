@@ -1,16 +1,30 @@
 package biblioteca;
 
-public class Biblioteca implements IPratica1 {
+import java.io.IOException;
 
+public class Biblioteca implements IPratica1 {
+	
+	private Graph graph;
+	
 	@Override
 	public boolean readGraph(String path) {
-		// TODO Auto-generated method stub
+		try {
+			Input input = new Input();
+			this.graph = input.readGraph(path);
+		} catch (IOException e) {
+			System.err.println("Falha na leitura!");
+		}
 		return false;
 	}
 
 	@Override
 	public boolean readWeightedGraph(String path) {
-		// TODO Auto-generated method stub
+		try {
+			Input input = new Input();
+			this.graph = input.readWeightedGraph(path);
+		} catch (IOException e) {
+			System.err.println("Falha na leitura!");
+		}
 		return false;
 	}
 
@@ -64,24 +78,29 @@ public class Biblioteca implements IPratica1 {
 		return null;
 	}
 
+	public Graph getGraph() {
+		return graph;
+	}
+
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
 
 	public static void main(String[] args) {
 
 
-		Biblioteca b = new Biblioteca();
+		Biblioteca biblioteca = new Biblioteca();
 
 		Graph grafo = new Graph();
 
-		Vertice s = grafo.addVertice("s");
-		Vertice t = grafo.addVertice("t");
-		Vertice y = grafo.addVertice("y");
-		Aresta st = grafo.addAresta(s, t);
-		Aresta sy = grafo.addAresta(s, y);
-		Aresta ty = grafo.addAresta(t, y);
-		Aresta yt = grafo.addAresta(y, t);
+		biblioteca.readGraph("grafo.txt");
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
+		
+		biblioteca.readWeightedGraph("grafoPonderado.txt");
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 
-		System.out.println(b.graphRepresentation(grafo, RepresentationType.AL));
-		System.out.println(b.graphRepresentation(grafo, RepresentationType.AM));
 	}
 
 }
