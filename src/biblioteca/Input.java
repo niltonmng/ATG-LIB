@@ -20,9 +20,9 @@ public class Input {
     		while (linha != null) {
     			String[] line = linha.split(" ");
     			
-    			Vertice origem = graph.addVertice(line[0]);
-    			Vertice destino = graph.addVertice(line[1]);
-    			graph.addAresta(origem, destino);
+    			graph.addVertice(line[0]);
+    			graph.addVertice(line[1]);
+    			graph.addAresta(line[0], line[1]);
     	 
     	        linha = lerArq.readLine();
     		}
@@ -48,9 +48,9 @@ public class Input {
     		while (linha != null) {
     			String[] line = linha.split(" ");
     			
-    			Vertice origem = graph.addVertice(line[0]);
-    			Vertice destino = graph.addVertice(line[1]);
-    			graph.addAresta(origem, destino, Double.parseDouble(line[1]));
+    			graph.addVertice(line[0]);
+    			graph.addVertice(line[1]);
+    			graph.addAresta(line[0], line[1], Double.parseDouble(line[1]));
     	 
     	        linha = lerArq.readLine();
     		}

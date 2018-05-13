@@ -1,11 +1,15 @@
 package biblioteca;
 
 import java.util.List;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Graph {
+	
+	private static final String NEW_LINE = System.lineSeparator();
 
-	List<Vertice> vertices;
+	ArrayList<Vertice> vertices;
 	List<Aresta> arestas;
 
 	public Graph() {
@@ -15,31 +19,60 @@ public class Graph {
 
 	Vertice addVertice(String nome) {
 		Vertice v = new Vertice(nome);
-		this.vertices.add(v);
-		return v;
+		if (! this.contemVertice(v)) {
+			this.vertices.add(v);
+			
+			return v;
+		}
+		return null;
 	}
 
-	Aresta addAresta(Vertice origem, Vertice destino) {
+	private boolean contemVertice(Vertice v) {
+		for (Vertice ver : vertices) {
+			if (ver.nome.equals(v.nome)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	Aresta addAresta(String o, String d) {
+		
+		Vertice origem = new Vertice(o);
+		Vertice destino = new Vertice(d);
+		
 		Aresta e = new Aresta(origem, destino);
-		origem.addAdj(e);
 		this.arestas.add(e);
+		
 		return e;
 	}
 
-	Aresta addAresta(Vertice origem, Vertice destino, double weight) {
+	Aresta addAresta(String o, String d, double weight) {
+		
+		Vertice origem = new Vertice(o);
+		Vertice destino = new Vertice(d);
+		
 		Aresta e = new Aresta(origem, destino, weight);
-		origem.addAdj(e);
 		this.arestas.add(e);
+		
 		return e;
 	}
 	
 	public String toStringAL() {
+		
+		Collections.sort(vertices);
 		String saida = "";
+		
 		for (Vertice x : this.vertices) {
 			saida += x.nome + " -> ";
-			for (Aresta e : x.adj) {
-				Vertice v = e.destino;
-				saida += v.nome + " ";
+			for (Aresta e : arestas) {
+				if (x.nome.equals(e.origem.nome)) {
+					Vertice v = e.destino;
+					saida += v.nome + " ";
+				} else if (x.nome.equals(e.destino.nome)) {
+					Vertice v = e.origem;
+					saida += v.nome + " ";
+				}
 			}
 			saida += "\n";
 		}
@@ -49,6 +82,8 @@ public class Graph {
 	// Fazer
 	public String toStringAM() {
 		String saida = "";
+		
+		
 		
 		return saida;
 	}

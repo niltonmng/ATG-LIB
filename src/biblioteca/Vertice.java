@@ -3,17 +3,24 @@ package biblioteca;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vertice {
+public class Vertice implements Comparable{
 	
 	String nome;
-	List<Aresta> adj;
 
 	Vertice(String nome) {
 		this.nome = nome;
-		this.adj = new ArrayList<Aresta>();
+	}
+	
+	public String toString() {
+		return nome;
 	}
 
-	void addAdj(Aresta e) {
-		this.adj.add(e);
+	@Override
+	public int compareTo(Object o) {
+		Vertice v = (Vertice) o;
+		
+		return this.nome.compareTo(v.nome);
 	}
+	
+
 }

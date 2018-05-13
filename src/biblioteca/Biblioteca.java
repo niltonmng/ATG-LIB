@@ -14,7 +14,7 @@ public class Biblioteca implements IPratica1 {
 		} catch (IOException e) {
 			System.err.println("Falha na leitura!");
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class Biblioteca implements IPratica1 {
 		} catch (IOException e) {
 			System.err.println("Falha na leitura!");
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -90,8 +90,6 @@ public class Biblioteca implements IPratica1 {
 
 
 		Biblioteca biblioteca = new Biblioteca();
-
-		Graph grafo = new Graph();
 
 		biblioteca.readGraph("grafo.txt");
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
