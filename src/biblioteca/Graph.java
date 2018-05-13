@@ -150,8 +150,6 @@ public class Graph {
 		return this.arestas.size();
 	}
 
-	
-	// Terminar
 	public String graphRepresentation(RepresentationType type) {
 		if(type.equals(RepresentationType.AL)){
 			return this.toStringAL();
