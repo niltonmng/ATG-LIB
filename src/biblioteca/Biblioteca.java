@@ -12,7 +12,7 @@ public class Biblioteca implements IPratica1 {
 	private Graph graph;
 
 	/**
-     * Mapeia o conteúdo do arquivo para criar um grafo.
+     * Mapeia o conteï¿½do do arquivo para criar um grafo.
      */
 	@Override
 	public boolean readGraph(String path) {
@@ -26,7 +26,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Mapeia o conteúdo do arquivo para criar um grafo com pesos.
+     * Mapeia o conteï¿½do do arquivo para criar um grafo com pesos.
      */
 	@Override
 	public boolean readWeightedGraph(String path) {
@@ -40,7 +40,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o número de vértices do Grafo.
+     * Retorna o nï¿½mero de vï¿½rtices do Grafo.
      */
 	@Override
 	public int getVertexNumber(Graph graph) {
@@ -48,7 +48,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o número de arestas do Grafo.
+     * Retorna o nï¿½mero de arestas do Grafo.
      */
 	@Override
 	public int getEdgeNumber(Graph graph) {
@@ -56,7 +56,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o resultado do cálculo do grau médio do grafo.
+     * Retorna o resultado do cï¿½lculo do grau mï¿½dio do grafo.
      */
 	@Override
 	public float getMeanEdge(Graph graph) {
@@ -64,7 +64,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o uma string com a representação do grafo de acordo com o tipo especificado.
+     * Retorna o uma string com a representaï¿½ï¿½o do grafo de acordo com o tipo especificado.
      */
 	@Override
 	public String graphRepresentation(Graph graph, RepresentationType type) {
@@ -79,7 +79,34 @@ public class Biblioteca implements IPratica1 {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	private int[] bfs(Vertice v, int size) {
+        Queue<Vertice> fila = new LinkedList<>();
+        
+        int[] distancia = new int[size];
+                
+        Vertice raiz = graph.vertices.get(0);
 
+        fila.add(raiz);
+
+        while(!fila.isEmpty()) {
+
+            Vertice u = fila.remove();
+            
+            boolean nivelAtual = false;
+            
+            for (Vertice vertice : u.getAdj()) {
+            	
+            	if(distancia[u.getIndex()]+1 < distancia[vertice.getIndex()]){
+            		distancia[vertice.getIndex] = distancia[u.getIndex()]+1;
+            		fila.add(vertice);
+            	}
+            }
+        }
+                
+        return distancia;
+	}
+	
 	/**
      * Busca em profundidade de um elemento no grafo.
      */
@@ -90,8 +117,8 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Verifica se o grafo é conexo.
-     * De um vértice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
+     * Verifica se o grafo ï¿½ conexo.
+     * De um vï¿½rtice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
      */
 	@Override
 	public boolean connected(Graph graph) {
@@ -127,7 +154,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Limpa as visitas feitas nos vértice.
+     * Limpa as visitas feitas nos vï¿½rtice.
      */
 	private void limpaVisitas(Graph graph) {
 		for (Vertice vertice : graph.vertices) {
@@ -136,7 +163,7 @@ public class Biblioteca implements IPratica1 {
 	}
 	
 	/**
-     * Verifica e retorna um filho não visitado do pai.
+     * Verifica e retorna um filho nï¿½o visitado do pai.
      */
 	private Vertice filhoNaoVisitado(Graph graph, Vertice pai) {
 		for (Aresta aresta : graph.arestas) {
@@ -153,7 +180,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o menor caminho de um vértice 1 para um vértice 2.
+     * Retorna o menor caminho de um vï¿½rtice 1 para um vï¿½rtice 2.
      */
 	@Override
 	public String shortestPath(Vertice v1, Vertice v2) {
@@ -162,7 +189,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna a árvore geradora mínima de um grafo.
+     * Retorna a ï¿½rvore geradora mï¿½nima de um grafo.
      */
 	@Override
 	public String mst(Graph graph) {
