@@ -54,9 +54,6 @@ public class Aresta implements Comparable<Aresta>{
 			return 1;
 		} else {
 			return 0;
-		}
-		
+    }
 	}
-
-	
 }

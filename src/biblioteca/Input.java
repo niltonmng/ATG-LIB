@@ -49,7 +49,8 @@ public class Input {
     		while (linha != null) {
     			String[] info = linha.split(" ");
     			
-    			graph.addAresta(graph.addVertice(info[0]), graph.addVertice(info[1]), Double.parseDouble(info[2]));
+        graph.addAresta(graph.addVertice(info[0]), graph.addVertice(info[1]), Double.parseDouble(info[2]));
+
     	 
     	        linha = lerArq.readLine();
     		}
