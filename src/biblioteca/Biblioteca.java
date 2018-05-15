@@ -1,6 +1,7 @@
 package biblioteca;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -248,12 +249,12 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	
-	class pv implements Comparable<pv>{
+	class No implements Comparable<No>{
 		Vertice vertice;
 		double peso;
 		
 		@Override
-		public int compareTo(pv o) {
+		public int compareTo(No o) {
 			if (this.peso < o.peso) {
 				return -1;
 			} else if (this.peso > o.peso) {
@@ -263,9 +264,9 @@ public class Biblioteca implements IPratica1 {
 		} 
 	};
 	
-	private void fillDistSP(pv[] dist) {
+	private void fillDistSP(No[] dist) {
 		for (int i = 0; i < dist.length; i++) {
-			dist[i] = new pv();
+			dist[i] = new No();
 			dist[i].peso = (double) INF;
 		}
 	}
@@ -275,37 +276,45 @@ public class Biblioteca implements IPratica1 {
 	 */
 	@Override
 	public String shortestPath(Vertice v1, Vertice v2) {
-		PriorityQueue<pv> fila = new PriorityQueue<>();
+		PriorityQueue<No> fila = new PriorityQueue<>();
 		
-		Vertice raiz = graph.getVertices().get(0);
-		int raizIndex = Integer.parseInt(raiz.toString());
-		pv[] distancia = new pv[this.graph.getSize()];
+		int raizIndex = Integer.parseInt(v1.toString());
+		
+		No[] distancia = new No[this.graph.getSize()];
 		fillDistSP(distancia);
-		pv r = new pv();
-		r.vertice = raiz;
-		r.peso = 0;
-		distancia[raizIndex] = r;
-		fila.add(r);
-
+		
+		No raiz = new No();
+		raiz.vertice = v1;
+		raiz.peso = 0;
+		distancia[raizIndex] = raiz;
+		fila.add(raiz);
+		
+		List<Integer> resultado = new ArrayList<Integer>();
 		while(!fila.isEmpty()) {
-			pv u = fila.remove();
+			No u = fila.remove();
 			
 			for (Aresta aresta : u.vertice.getAdj()) {
 				Vertice destino = aresta.getDestino();
 
 				int origemIndex = Integer.parseInt(u.vertice.getNome());
 				int destinoIndex = Integer.parseInt(destino.getNome());
-				System.out.println(origemIndex + " - > " + destinoIndex + " - > " + aresta.getPeso());
+				
 				if(distancia[origemIndex].peso+aresta.getPeso() < distancia[destinoIndex].peso){
 					distancia[destinoIndex].vertice = destino;
 					distancia[destinoIndex].peso = distancia[origemIndex].peso+aresta.getPeso();
+					resultado.add(Integer.parseInt(destino.getNome()));
+					if (destino.getNome().equals(v2.getNome())) break;
 					fila.add(distancia[destinoIndex]);
 				}
 			}
 		}
 		
-		System.out.println(Arrays.toString(distancia));
-		return null;
+		String resposta = v1.getNome();
+		for (Integer i : resultado) {
+			resposta += " " + i;
+		}
+		
+		return resposta;
 	}
 	
 	class subset {
@@ -319,13 +328,14 @@ public class Biblioteca implements IPratica1 {
 	public String mst(Graph graph) {
 		Graph tree = new Graph();
 		kruskal(tree);
-		return null;
+		
+		return this.BFS(tree, tree.getVertices().get(0));
 	}
 	
 	private void kruskal(Graph tree) {
 		List<Aresta> arestas = this.graph.getArestas();
 		Collections.sort(arestas);
-				
+
 		int numeroDeArestas = 0;
 		int indice = 0;
 		int numeroDeVertices = this.graph.getVertexNumber();
@@ -359,9 +369,8 @@ public class Biblioteca implements IPratica1 {
                 Union(subsets, x, y);
             }
         }
-		
-		System.out.println(this.BFS(tree, tree.getVertices().get(0)));
 	}
+	
 	private int find(subset[] subsets, int i) {
         if (subsets[i].parent != i)
             subsets[i].parent = find(subsets, subsets[i].parent);
@@ -406,11 +415,11 @@ public class Biblioteca implements IPratica1 {
 
 		biblioteca.readWeightedGraph("grafoPonderado.txt");
 		
-		biblioteca.mst(biblioteca.graph);
+		System.out.println(biblioteca.mst(biblioteca.graph));
 		
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
-
+	}
 	
 	public Vertice getVertexByName(int name){
 		String nome = Integer.toString(name);
