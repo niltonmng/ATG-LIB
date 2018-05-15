@@ -1,6 +1,7 @@
 package biblioteca;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -80,33 +81,48 @@ public class Biblioteca implements IPratica1 {
 		return null;
 	}
 	
-	private int[] bfs(Vertice v, int size) {
+	public int[] bfs(Vertice v, int size) {
         Queue<Vertice> fila = new LinkedList<>();
         
-        int[] distancia = new int[size];
-                
+        int[] distancia = new int[size+1];
+        
+        fillDist(distancia);
+        
         Vertice raiz = graph.vertices.get(0);
-
+    	int raizIndex = Integer.parseInt(raiz.toString());
+    	
+    	distancia[raizIndex] = 0;
+    	
         fila.add(raiz);
 
         while(!fila.isEmpty()) {
 
             Vertice u = fila.remove();
-            
-            boolean nivelAtual = false;
-            
-            for (Vertice vertice : u.getAdj()) {
+            System.out.println(u.getAdj().toString());
+            for (Aresta aresta : u.getAdj()) {
+            	Vertice vertice = aresta.destino;
+            	System.out.println(aresta.origem.nome + " - > " + vertice.nome);
+
+            	int uIndex = Integer.parseInt(u.toString());
+            	int verticeIndex = Integer.parseInt(vertice.toString());
             	
-            	if(distancia[u.getIndex()]+1 < distancia[vertice.getIndex()]){
-            		distancia[vertice.getIndex] = distancia[u.getIndex()]+1;
+            	if(distancia[uIndex]+1 < distancia[verticeIndex]){
+            		distancia[verticeIndex] = distancia[uIndex]+1;
             		fila.add(vertice);
             	}
             }
         }
-                
+        
+        System.out.println(Arrays.toString(distancia));
         return distancia;
 	}
 	
+	private void fillDist(int[] dist) {
+		int INF = 2222;
+		for (int i = 0; i < dist.length; i++) {
+			dist[i] = INF;
+		}
+	}
 	/**
      * Busca em profundidade de um elemento no grafo.
      */
@@ -115,68 +131,22 @@ public class Biblioteca implements IPratica1 {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	private int[] dfs(Vertice v, int size) {
+		
+		return null;
+	}
+	
 	/**
      * Verifica se o grafo � conexo.
      * De um v�rtice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
      */
 	@Override
 	public boolean connected(Graph graph) {
-        Queue<Vertice> fila = new LinkedList<>();
-        
-        int verticesVisitados = 0;
-        
-        Vertice raiz = graph.vertices.get(0);
+		Vertice v = graph.vertices.get(0);
+//        int[] visitado = this.dfs(graph.getVertexNumber(), v);
 
-        raiz.setVisitado(true);
-        fila.add(raiz);
-
-        while(!fila.isEmpty()) {
-
-            Vertice pai = fila.remove();
-            Vertice filho = null;
-            
-            boolean nivelAtual = false;
-            
-            while ((filho = filhoNaoVisitado(graph, pai)) != null) {
-            	
-            	if(!nivelAtual){
-                    nivelAtual = true;
-                    verticesVisitados++;
-                }
-            	
-            	filho.setVisitado(true);
-                fila.add(filho);
-            }
-        }
-        limpaVisitas(graph);
-        return (verticesVisitados == graph.vertices.size());
-	}
-
-	/**
-     * Limpa as visitas feitas nos v�rtice.
-     */
-	private void limpaVisitas(Graph graph) {
-		for (Vertice vertice : graph.vertices) {
-			vertice.visitado = false;
-		}
-	}
-	
-	/**
-     * Verifica e retorna um filho n�o visitado do pai.
-     */
-	private Vertice filhoNaoVisitado(Graph graph, Vertice pai) {
-		for (Aresta aresta : graph.arestas) {
-			Vertice vertice1 = aresta.origem;
-			Vertice vertice2 = aresta.destino;
-
-			if (vertice1.equals(pai) && !(vertice2.visitado)) {
-				return vertice2;
-			} else if (vertice2.equals(pai) && !(vertice1.visitado)) {
-				return vertice1;
-			}
-		}
-		return null;
+        return true;
 	}
 
 	/**
@@ -208,9 +178,11 @@ public class Biblioteca implements IPratica1 {
 	public static void main(String[] args) {
 
 		Biblioteca biblioteca = new Biblioteca();
-
 		biblioteca.readGraph("grafo.txt");
-		System.out.println(biblioteca.connected(biblioteca.getGraph()));
+		Vertice v = biblioteca.getGraph().vertices.get(0);
+
+		biblioteca.bfs(v, biblioteca.getGraph().getVertexNumber());
+//		System.out.println(biblioteca.connected(biblioteca.getGraph()));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 
