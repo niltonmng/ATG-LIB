@@ -43,12 +43,13 @@ public class Input {
 			BufferedReader lerArq = new BufferedReader(arq);
 			
 			String linha = lerArq.readLine();
+			graph.setSize(Integer.parseInt(linha));
 			linha = lerArq.readLine();
 			
     		while (linha != null) {
-    			String[] line = linha.split(" ");
+    			String[] info = linha.split(" ");
     			
-    			graph.addAresta(graph.addVertice(line[0]), graph.addVertice(line[1]), Double.parseDouble(line[1]));
+    			graph.addAresta(graph.addVertice(info[0]), graph.addVertice(info[1]), Double.parseDouble(info[2]));
     	 
     	        linha = lerArq.readLine();
     		}

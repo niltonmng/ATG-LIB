@@ -107,17 +107,15 @@ public class Biblioteca implements IPratica1 {
 	
 	public int[] bfs(Vertice v, int[] distancia, int[] pais) {
         Queue<Vertice> fila = new LinkedList<>();
-        
-        Vertice raiz = graph.getVertices().get(0);
-    	int raizIndex = Integer.parseInt(raiz.toString());
+       
+    	int raizIndex = Integer.parseInt(v.toString());
     	
     	distancia[raizIndex] = 0;
     	
-        fila.add(raiz);
+        fila.add(v);
 
         while(!fila.isEmpty()) {
             Vertice u = fila.remove();
-
             for (Aresta aresta : u.getAdj()) {
             	Vertice vertice = aresta.getDestino();
 
@@ -267,51 +265,52 @@ public class Biblioteca implements IPratica1 {
      */
 	@Override
 	public String mst(Graph graph) {
-		List<Aresta> arestas = graph.getArestas();
-		Collections.sort(arestas);
-		
-		System.out.println(arestas.toString());
-		
-		int numeroDeArestas = 0;
-		int indice = 0;
-		int numeroDeVertices = graph.getVertexNumber();
-		
-		subset subsets[] = new subset[graph.getSize()];
-        for(int i = 1; i < graph.getSize(); i++) {
-            subsets[i]= new subset();
-        }
-        
 		Graph tree = new Graph();
-		tree.setSize(numeroDeVertices-1);
-		
-		while (numeroDeArestas < numeroDeVertices - 1)
-        {
-            // Step 2: Pick the smallest edge. And increment 
-            // the index for next iteration
-            Aresta proxAresta = arestas.get(indice++);
-            
-            
-            int x = this.find(subsets, Integer.parseInt(proxAresta.getOrigem().getNome()));
-            int y = this.find(subsets,  Integer.parseInt(proxAresta.getDestino().getNome()));
- 
-            // If including this edge does't cause cycle,
-            // include it in result and increment the index 
-            // of result for next edge
-            if (x != y)
-            {
-                tree.addAresta(proxAresta.getOrigem(), proxAresta.getDestino());
-                numeroDeArestas++;
-                Union(subsets, x, y);
-            }
-            // Else discard the next_edge
-        }
- 
-		System.out.println(this.BFS(tree, tree.getVertices().get(0)));
+		kruskal(tree);
 		return null;
 	}
 	
+	private void kruskal(Graph tree) {
+		List<Aresta> arestas = this.graph.getArestas();
+		Collections.sort(arestas);
+				
+		int numeroDeArestas = 0;
+		int indice = 0;
+		int numeroDeVertices = this.graph.getVertexNumber();
+		subset subsets[] = new subset[numeroDeVertices+1];
+        for(int i = 0; i < numeroDeVertices+1; i++) {
+            subsets[i] = new subset();
+        }
+		tree.setSize(numeroDeVertices);
+		
+		// Fill subsets
+        for (int v = 1; v < numeroDeVertices+1; ++v)
+        {
+            subsets[v].parent = v;
+            subsets[v].rank = 0;
+        }
+		
+		while (numeroDeArestas < numeroDeVertices - 1) {	
+            Aresta proxAresta = arestas.get(indice);
+            indice++;
+            
+            int x = this.find(subsets, Integer.parseInt(proxAresta.getOrigem().getNome()));
+            int y = this.find(subsets,  Integer.parseInt(proxAresta.getDestino().getNome()));
+
+            if (x != y) {
+            	
+            	String origemNome = proxAresta.getOrigem().getNome();
+            	String destinoNome = proxAresta.getDestino().getNome();
+
+                tree.addAresta(tree.addVertice(origemNome), tree.addVertice(destinoNome), proxAresta.getPeso());
+                numeroDeArestas++;
+                Union(subsets, x, y);
+            }
+        }
+		
+		System.out.println(this.BFS(tree, tree.getVertices().get(0)));
+	}
 	private int find(subset[] subsets, int i) {
-        // find root and make root as parent of i (path compression)
         if (subsets[i].parent != i)
             subsets[i].parent = find(subsets, subsets[i].parent);
  
@@ -322,17 +321,11 @@ public class Biblioteca implements IPratica1 {
         int xroot = find(subsets, x);
         int yroot = find(subsets, y);
  
-        // Attach smaller rank tree under root of high rank tree
-        // (Union by Rank)
-        if (subsets[xroot].rank < subsets[yroot].rank)
+        if (subsets[xroot].rank < subsets[yroot].rank) {
             subsets[xroot].parent = yroot;
-        else if (subsets[xroot].rank > subsets[yroot].rank)
+        } else if (subsets[xroot].rank > subsets[yroot].rank) {
             subsets[yroot].parent = xroot;
- 
-        // If ranks are same, then make one as root and increment
-        // its rank by one
-        else
-        {
+        } else {
             subsets[yroot].parent = xroot;
             subsets[xroot].rank++;
         }
@@ -355,11 +348,14 @@ public class Biblioteca implements IPratica1 {
 		System.out.println(biblioteca.BFS(biblioteca.graph, v));
 		System.out.println(biblioteca.DFS(biblioteca.graph, v));
 		System.out.println(biblioteca.connected(biblioteca.getGraph()));
+		System.out.println();
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 
 		biblioteca.readWeightedGraph("grafoPonderado.txt");
+		
 		biblioteca.mst(biblioteca.graph);
+		
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 

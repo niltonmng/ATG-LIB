@@ -3,42 +3,42 @@ package biblioteca;
 public interface IPratica1 {
 	
 	/**
-	 * Mapeia o conteúdo do arquivo para criar um grafo.
+	 * Mapeia o conteï¿½do do arquivo para criar um grafo.
 	 * @param path
 	 * @return boolean
 	 */
 	public boolean readGraph(String path);
 	
 	/**
-	 * Mapeia o conteúdo do arquivo para criar um grafo com pesos.
+	 * Mapeia o conteï¿½do do arquivo para criar um grafo com pesos.
 	 * @param path
 	 * @return boolean
 	 */
 	public boolean readWeightedGraph(String path);
 	
 	/**
-	 * Retorna o número de vértices do Grafo.
+	 * Retorna o nï¿½mero de vï¿½rtices do Grafo.
 	 * @param graph
 	 * @return int
 	 */
 	public int getVertexNumber(Graph graph);
 	
 	/**
-	 * Retorna o número de arestas do Grafo.
+	 * Retorna o nï¿½mero de arestas do Grafo.
 	 * @param graph
 	 * @return int
 	 */
 	public int getEdgeNumber(Graph graph);
 	
 	/**
-	 * Retorna o resultado do cálculo do grau médio do grafo.
+	 * Retorna o resultado do cï¿½lculo do grau mï¿½dio do grafo.
 	 * @param graph
 	 * @return float
 	 */
 	public float getMeanEdge(Graph graph);
 	
 	/**
-	 * Retorna o uma string com a representação do grafo de acordo com o tipo especificado.
+	 * Retorna o uma string com a representaï¿½ï¿½o do grafo de acordo com o tipo especificado.
 	 * @param graph
 	 * @param type
 	 * @return String
@@ -62,8 +62,8 @@ public interface IPratica1 {
 	public String DFS(Graph graph, Vertice v);
 	
 	/**
-	 * Verifica se o grafo é conexo.
-     * De um vértice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
+	 * Verifica se o grafo ï¿½ conexo.
+     * De um vï¿½rtice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
 	 * @param graph
 	 * @return boolean
 	 */
@@ -71,7 +71,7 @@ public interface IPratica1 {
 	
 	
 	/**
-	 * Retorna o menor caminho de um vértice 1 para um vértice 2.
+	 * Retorna o menor caminho de um vï¿½rtice 1 para um vï¿½rtice 2.
 	 * @param v1
 	 * @param v2
 	 * @return boolean
@@ -79,7 +79,7 @@ public interface IPratica1 {
 	public String shortestPath(Vertice v1, Vertice v2);
 	
 	/**
-	 * Retorna a árvore geradora mínima de um grafo.
+	 * Retorna a ï¿½rvore geradora mï¿½nima de um grafo.
 	 * @param graph
 	 * @return String
 	 */

@@ -42,12 +42,8 @@ public class Aresta implements Comparable<Aresta>{
 		this.peso = peso;
 	}
 	
-	public boolean compare(Aresta a, Aresta b) {
-		return a.peso <= b.peso;
-	}
-	
 	public String toString() {
-		return this.origem.getNome() + " -> " + this.destino.getNome();
+		return this.origem.getNome() + " -> " + this.destino.getNome() + " : " + this.getPeso();
 	}
 
 	@Override
@@ -55,10 +51,11 @@ public class Aresta implements Comparable<Aresta>{
 		if (this.peso < a.getPeso()) {
 			return -1;
 		} else if (this.peso > a.getPeso()) {
-			return -1;
+			return 1;
+		} else {
+			return 0;
 		}
 		
-		return 0;
 	}
 
 	
