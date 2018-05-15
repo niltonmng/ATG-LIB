@@ -21,20 +21,29 @@ public class Graph {
 	}
 
 	/**
-     * Adiciona um vértice ao grafo.
+     * Adiciona um vï¿½rtice ao grafo.
      */
-	Vertice addVertice(String nome) {
+	public Vertice addVertice(String nome) {
 		Vertice v = new Vertice(nome);
 		if (! this.contemVertice(v)) {
 			this.vertices.add(v);
 			
 			return v;
 		}
+		return this.getVertice(nome);
+	}
+	
+	private Vertice getVertice(String n) {
+		for (Vertice v : this.vertices) {
+			if (v.nome.equals(n)) {
+				return v;
+			}
+		}
+		
 		return null;
 	}
-
 	/**
-     * Verifica se o vértice a ser inserido no grafo já existe.
+     * Verifica se o vï¿½rtice a ser inserido no grafo jï¿½ existe.
      */
 	private boolean contemVertice(Vertice v) {
 		for (Vertice ver : vertices) {
@@ -48,33 +57,32 @@ public class Graph {
 	/**
      * Adiciona uma aresta ao grafo.
      */
-	Aresta addAresta(String o, String d) {
+	public void addAresta(Vertice o, Vertice d) {
 		
-		Vertice origem = new Vertice(o);
-		Vertice destino = new Vertice(d);
-		
-		Aresta e = new Aresta(origem, destino);
-		this.arestas.add(e);
-		
-		return e;
+		Aresta fE = new Aresta(o, d);
+		Aresta sE = new Aresta(d, o);
+		this.arestas.add(fE);
+		this.arestas.add(sE);
+		o.addAdj(fE);
+		d.addAdj(sE);
 	}
 
 	/**
      * Adiciona uma aresta com peso ao grafo.
      */
-	Aresta addAresta(String o, String d, double weight) {
+	public void addAresta(Vertice o, Vertice d, double weight) {
+	
+		Aresta fE = new Aresta(o, d, weight);
+		Aresta sE = new Aresta(d, o, weight);
+		this.arestas.add(fE);
+		this.arestas.add(sE);
 		
-		Vertice origem = new Vertice(o);
-		Vertice destino = new Vertice(d);
-		
-		Aresta e = new Aresta(origem, destino, weight);
-		this.arestas.add(e);
-		
-		return e;
+		o.addAdj(fE);
+		d.addAdj(sE);
 	}
 	
 	/**
-     * Retorna grafo em forma de lista de adjacência.
+     * Retorna grafo em forma de lista de adjacï¿½ncia.
      */
 	public String toStringAL() {
 		
@@ -87,9 +95,6 @@ public class Graph {
 				if (x.nome.equals(e.origem.nome)) {
 					Vertice v = e.destino;
 					saida += v.nome + " ";
-				} else if (x.nome.equals(e.destino.nome)) {
-					Vertice v = e.origem;
-					saida += v.nome + " ";
 				}
 			}
 			saida += "\n";
@@ -98,7 +103,7 @@ public class Graph {
 	}
 	
 	/**
-     * Retorna o vértice de maior valor no grafo.
+     * Retorna o vï¿½rtice de maior valor no grafo.
      */
 	private int maiorVertice(){
 		int maior = 0;
@@ -109,7 +114,7 @@ public class Graph {
 	}
 	
 	/**
-     * Verifica se valor está presente na lista.
+     * Verifica se valor estï¿½ presente na lista.
      */
 	private boolean contem(ArrayList<Integer> lista, int valor){
 		if(lista.contains(valor)) return true;
@@ -117,7 +122,7 @@ public class Graph {
 	}
 
 	/**
-     * Retorna grafo em forma de matriz de adjacência.
+     * Retorna grafo em forma de matriz de adjacï¿½ncia.
      */
 	public String toStringAM() {
 		String saida = "";
@@ -136,11 +141,9 @@ public class Graph {
 				if (x.nome.equals(e.origem.nome)) {
 					Vertice v = e.destino;
 					aux += v.nome + " ";
-				} else if (x.nome.equals(e.destino.nome)) {
-					Vertice v = e.origem;
-					aux += v.nome + " ";
 				}
 			}
+			
 			aux.trim();
 			String[] quebra = aux.split(" ");
 			ArrayList<Integer> aux2 = new ArrayList<Integer>();
@@ -169,14 +172,14 @@ public class Graph {
 	}
 
 	/**
-     * Retorna o número de vértices do Grafo.
+     * Retorna o nï¿½mero de vï¿½rtices do Grafo.
      */
 	public int getVertexNumber() {
 		return this.vertices.size();
 	}
 
 	/**
-     * Retorna o número de arestas do Grafo.
+     * Retorna o nï¿½mero de arestas do Grafo.
      */
 	public int getEdgeNumber() {
 		return this.arestas.size();

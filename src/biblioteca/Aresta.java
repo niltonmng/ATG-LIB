@@ -17,4 +17,8 @@ public class Aresta {
 		this.destino = destino;
 		this.peso = peso;
 	}
+	
+	public String toString() {
+		return this.origem.nome + " -> " + this.destino.nome;
+	}
 }
