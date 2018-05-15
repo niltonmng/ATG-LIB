@@ -422,4 +422,25 @@ public class Biblioteca implements IPratica1 {
 		return null;
 	}
 
+	public static void main(String[] args) {
+
+		Biblioteca biblioteca = new Biblioteca();
+		biblioteca.readGraph("grafo.txt");
+		Vertice v = biblioteca.getGraph().getVertices().get(0);
+
+		System.out.println(biblioteca.BFS(biblioteca.graph, v));
+		System.out.println(biblioteca.DFS(biblioteca.graph, v));
+		System.out.println(biblioteca.connected(biblioteca.getGraph()));
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
+
+		biblioteca.readWeightedGraph("grafoPonderado.txt");
+		System.out.println(biblioteca.graph.getSize());
+		biblioteca.shortestPath(biblioteca.getVertexByName(1), biblioteca.getVertexByName(5));
+		System.out.println();
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
+		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
+
+	}
+
 }
