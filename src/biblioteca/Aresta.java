@@ -1,6 +1,6 @@
 package biblioteca;
 
-public class Aresta {
+public class Aresta implements Comparable<Aresta>{
 	
 	private Vertice origem;
 	private Vertice destino;
@@ -44,5 +44,15 @@ public class Aresta {
 	
 	public String toString() {
 		return this.origem.getNome() + " -> " + this.destino.getNome();
+	}
+
+	@Override
+	public int compareTo(Aresta arg0) {
+		if(this.peso < arg0.getPeso()) {
+			return -1;
+		} else if (this.peso > arg0.getPeso()) {
+			return 1;
+		}
+		return 0;
 	}
 }
