@@ -80,7 +80,6 @@ public class Biblioteca implements IPratica1 {
      */
 	@Override
 	public String BFS(Graph graph, Vertice v) {
-		// TODO Auto-generated method stub
 		int size = graph.getSize();
 		
         int[] distancia = new int[size];
@@ -131,8 +130,6 @@ public class Biblioteca implements IPratica1 {
             }
         }
         
-        System.out.println(Arrays.toString(distancia));
-        System.out.println(Arrays.toString(pais));
         return distancia;
 	}
 	
@@ -186,7 +183,7 @@ public class Biblioteca implements IPratica1 {
 	
 	private void fillNivel(int[] nivel) {
 		for (int i = 0; i < nivel.length; i++) {
-			nivel[i] = 0;
+			nivel[i] = INF;
 		}
 	}
 	
@@ -198,11 +195,14 @@ public class Biblioteca implements IPratica1 {
 		}
 		
 		visitado[verticeIndex] = 1;
-		nivel[verticeIndex] = nivelValor;
+		nivel[verticeIndex] = Math.min(nivel[verticeIndex],nivelValor);
 
 		for (Aresta e : v.getAdj()) {
-			pais[Integer.parseInt(e.getDestino().getNome())] = Integer.parseInt(v.getNome());
-			dfs(e.getDestino(), visitado, pais, nivel, nivelValor+1);
+			int destinoIndex = Integer.parseInt(e.getDestino().getNome());
+			if (visitado[destinoIndex] == 0) {
+				pais[destinoIndex] = verticeIndex;
+				dfs(e.getDestino(), visitado, pais, nivel, nivelValor+1);
+			}
 		}
 	}
 	
@@ -216,7 +216,10 @@ public class Biblioteca implements IPratica1 {
 		visitado[verticeIndex] = 1;
 
 		for (Aresta e : v.getAdj()) {
-			connected(e.getDestino(), visitado);
+			int destinoIndex = Integer.parseInt(e.getDestino().getNome());
+			if (visitado[destinoIndex] == 0) {
+				connected(e.getDestino(), visitado);
+			}
 		}
 	}
 	

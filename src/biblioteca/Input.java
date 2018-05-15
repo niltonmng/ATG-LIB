@@ -17,7 +17,6 @@ public class Input {
 			String linha = lerArq.readLine();
 			
 			graph.setSize(Integer.parseInt(linha));
-			
 			linha = lerArq.readLine();
     		while (linha != null) {
     			String[] info = linha.split(" ");
