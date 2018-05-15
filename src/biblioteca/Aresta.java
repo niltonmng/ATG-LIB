@@ -2,9 +2,33 @@ package biblioteca;
 
 public class Aresta {
 	
-	Vertice origem;
-	Vertice destino;
-	double peso;
+	private Vertice origem;
+	private Vertice destino;
+	private double peso;
+
+	public Vertice getOrigem() {
+		return origem;
+	}
+
+	public void setOrigem(Vertice origem) {
+		this.origem = origem;
+	}
+
+	public Vertice getDestino() {
+		return destino;
+	}
+
+	public void setDestino(Vertice destino) {
+		this.destino = destino;
+	}
+
+	public double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(double peso) {
+		this.peso = peso;
+	}
 
 	Aresta(Vertice origem, Vertice destino) {
 		this.origem = origem;
@@ -19,6 +43,6 @@ public class Aresta {
 	}
 	
 	public String toString() {
-		return this.origem.nome + " -> " + this.destino.nome;
+		return this.origem.getNome() + " -> " + this.destino.getNome();
 	}
 }

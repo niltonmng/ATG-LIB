@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Vertice implements Comparable<Object>{
 	
-	String nome;
-	List<Aresta> adj;
+	private String nome;
+	private List<Aresta> adj;
 	
 	Vertice(String nome) {
 		this.nome = nome;
@@ -26,6 +26,18 @@ public class Vertice implements Comparable<Object>{
 		this.adj.add(e);
 	}
 	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setAdj(List<Aresta> adj) {
+		this.adj = adj;
+	}
+
 	@Override
 	public int compareTo(Object o) {
 		Vertice v = (Vertice) o;

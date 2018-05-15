@@ -9,7 +9,10 @@ import java.util.Queue;
  * Classe que representa a entidade Biblioteca com funcionalidades para um grafo.
  */
 public class Biblioteca implements IPratica1 {
-
+	
+	public static int INF = 100000000;
+	public static String NOVA_LINHA = System.lineSeparator();
+	
 	private Graph graph;
 
 	/**
@@ -78,17 +81,33 @@ public class Biblioteca implements IPratica1 {
 	@Override
 	public String BFS(Graph graph, Vertice v) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public int[] bfs(Vertice v, int size) {
-        Queue<Vertice> fila = new LinkedList<>();
-        
-        int[] distancia = new int[size+1];
+		int size = graph.getSize();
+		
+        int[] distancia = new int[size];
+        int[] pais = new int[size];
         
         fillDist(distancia);
+        fillPais(pais);
         
-        Vertice raiz = graph.vertices.get(0);
+        bfs(v, distancia, pais);
+        
+        String resposta = "";
+        for (int i = 1; i < size; i++) {
+        	resposta += i + " - " + distancia[i] + " ";
+        	if (pais[i] == -1) {
+        		resposta += "-";
+        	} else {
+        		resposta += pais[i];
+        	}
+        	resposta += NOVA_LINHA;
+        }
+		return resposta;
+	}
+	
+	public int[] bfs(Vertice v, int[] distancia, int[] pais) {
+        Queue<Vertice> fila = new LinkedList<>();
+        
+        Vertice raiz = graph.getVertices().get(0);
     	int raizIndex = Integer.parseInt(raiz.toString());
     	
     	distancia[raizIndex] = 0;
@@ -96,45 +115,109 @@ public class Biblioteca implements IPratica1 {
         fila.add(raiz);
 
         while(!fila.isEmpty()) {
-
             Vertice u = fila.remove();
-            System.out.println(u.getAdj().toString());
-            for (Aresta aresta : u.getAdj()) {
-            	Vertice vertice = aresta.destino;
-            	System.out.println(aresta.origem.nome + " - > " + vertice.nome);
 
-            	int uIndex = Integer.parseInt(u.toString());
-            	int verticeIndex = Integer.parseInt(vertice.toString());
+            for (Aresta aresta : u.getAdj()) {
+            	Vertice vertice = aresta.getDestino();
+
+            	int uIndex = Integer.parseInt(u.getNome());
+            	int verticeIndex = Integer.parseInt(vertice.getNome());
             	
             	if(distancia[uIndex]+1 < distancia[verticeIndex]){
             		distancia[verticeIndex] = distancia[uIndex]+1;
+            		pais[verticeIndex] = uIndex;
             		fila.add(vertice);
             	}
             }
         }
         
         System.out.println(Arrays.toString(distancia));
+        System.out.println(Arrays.toString(pais));
         return distancia;
 	}
 	
+	private void fillPais(int[] pais) {
+		for (int i = 0; i < pais.length; i++) {
+			pais[i] = -1;
+		}
+	}
+	
 	private void fillDist(int[] dist) {
-		int INF = 2222;
 		for (int i = 0; i < dist.length; i++) {
 			dist[i] = INF;
 		}
 	}
+	
 	/**
      * Busca em profundidade de um elemento no grafo.
      */
 	@Override
 	public String DFS(Graph graph, Vertice v) {
-		// TODO Auto-generated method stub
-		return null;
+		int size = graph.getSize();
+		int[] visitado = new int[size];
+        int[] pais = new int[size];
+		int[] nivel = new int[size];
+
+		fillVis(visitado);
+		fillPais(pais);
+		fillNivel(nivel);
+		
+		this.dfs(v, visitado, pais, nivel, 0);
+		
+		String resposta = "";
+        for (int i = 1; i < size; i++) {
+        	resposta += i + " - " + nivel[i] + " ";
+        	if (pais[i] == -1) {
+        		resposta += "-";
+        	} else {
+        		resposta += pais[i];
+        	}
+        	resposta += NOVA_LINHA;
+        }
+		
+		return resposta;
 	}
 	
-	private int[] dfs(Vertice v, int size) {
+	private void fillVis(int[] vis) {
+		for (int i = 0; i < vis.length; i++) {
+			vis[i] = 0;
+		}
+	}
+	
+	private void fillNivel(int[] nivel) {
+		for (int i = 0; i < nivel.length; i++) {
+			nivel[i] = 0;
+		}
+	}
+	
+	private void dfs(Vertice v, int[] visitado, int[] pais, int[] nivel, int nivelValor) {
+		int verticeIndex = Integer.parseInt(v.getNome());
 		
-		return null;
+		if (visitado[verticeIndex] == 1) {
+			return;
+		}
+		
+		visitado[verticeIndex] = 1;
+		nivel[verticeIndex] = nivelValor;
+
+		for (Aresta e : v.getAdj()) {
+			pais[Integer.parseInt(e.getDestino().getNome())] = Integer.parseInt(v.getNome());
+			dfs(e.getDestino(), visitado, pais, nivel, nivelValor+1);
+		}
+	}
+	
+	private void connected(Vertice v, int[] visitado) {
+		int verticeIndex = Integer.parseInt(v.getNome());
+		
+		if (visitado[verticeIndex] == 1) {
+			return;
+		}
+		
+		visitado[verticeIndex] = 1;
+
+		for (Aresta e : v.getAdj()) {
+			connected(e.getDestino(), visitado);
+		}
 	}
 	
 	/**
@@ -143,9 +226,18 @@ public class Biblioteca implements IPratica1 {
      */
 	@Override
 	public boolean connected(Graph graph) {
-		Vertice v = graph.vertices.get(0);
-//        int[] visitado = this.dfs(graph.getVertexNumber(), v);
+		Vertice v = graph.getVertices().get(0);
+		int size = graph.getSize();
+		
+        int[] visitado = new int[size];
 
+        this.connected(v, visitado);
+        
+        for (int i = 1; i < size; i++) {
+        	if (visitado[i] == 0) {
+        		return false;
+        	}
+        }
         return true;
 	}
 
@@ -179,10 +271,11 @@ public class Biblioteca implements IPratica1 {
 
 		Biblioteca biblioteca = new Biblioteca();
 		biblioteca.readGraph("grafo.txt");
-		Vertice v = biblioteca.getGraph().vertices.get(0);
+		Vertice v = biblioteca.getGraph().getVertices().get(0);
 
-		biblioteca.bfs(v, biblioteca.getGraph().getVertexNumber());
-//		System.out.println(biblioteca.connected(biblioteca.getGraph()));
+		System.out.println(biblioteca.BFS(biblioteca.graph, v));
+		System.out.println(biblioteca.DFS(biblioteca.graph, v));
+		System.out.println(biblioteca.connected(biblioteca.getGraph()));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 

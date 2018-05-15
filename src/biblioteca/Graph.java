@@ -12,14 +12,40 @@ public class Graph {
 	
 	//private static final String NEW_LINE = System.lineSeparator();
 
-	ArrayList<Vertice> vertices;
-	List<Aresta> arestas;
-
+	private ArrayList<Vertice> vertices;
+	private List<Aresta> arestas;
+	private int size;
+	
 	public Graph() {
+		this.size = 0;
 		this.vertices = new ArrayList<Vertice>();
 		this.arestas = new ArrayList<Aresta>();
 	}
 
+	public int getSize() {
+		return this.size;
+	}
+	
+	public ArrayList<Vertice> getVertices() {
+		return vertices;
+	}
+
+	public void setVertices(ArrayList<Vertice> vertices) {
+		this.vertices = vertices;
+	}
+
+	public List<Aresta> getArestas() {
+		return arestas;
+	}
+
+	public void setArestas(List<Aresta> arestas) {
+		this.arestas = arestas;
+	}
+
+	public void setSize(int size) {
+		this.size = size+1;
+	}
+	
 	/**
      * Adiciona um v�rtice ao grafo.
      */
@@ -35,7 +61,7 @@ public class Graph {
 	
 	private Vertice getVertice(String n) {
 		for (Vertice v : this.vertices) {
-			if (v.nome.equals(n)) {
+			if (v.getNome().equals(n)) {
 				return v;
 			}
 		}
@@ -47,7 +73,7 @@ public class Graph {
      */
 	private boolean contemVertice(Vertice v) {
 		for (Vertice ver : vertices) {
-			if (ver.nome.equals(v.nome)) {
+			if (ver.getNome().equals(v.getNome())) {
 				return true;
 			}
 		}
@@ -90,11 +116,11 @@ public class Graph {
 		String saida = "";
 		
 		for (Vertice x : this.vertices) {
-			saida += x.nome + " - ";
+			saida += x.getNome() + " - ";
 			for (Aresta e : arestas) {
-				if (x.nome.equals(e.origem.nome)) {
-					Vertice v = e.destino;
-					saida += v.nome + " ";
+				if (x.getNome().equals(e.getOrigem().getNome())) {
+					Vertice v = e.getDestino();
+					saida += v.getNome() + " ";
 				}
 			}
 			saida += "\n";
@@ -108,7 +134,7 @@ public class Graph {
 	private int maiorVertice(){
 		int maior = 0;
 		for (int i = 0; i < vertices.size(); i++) {
-			if(Integer.parseInt(vertices.get(i).nome) > maior) maior = Integer.parseInt(vertices.get(i).nome);
+			if(Integer.parseInt(vertices.get(i).getNome()) > maior) maior = Integer.parseInt(vertices.get(i).getNome());
 		}
 		return maior;
 	}
@@ -138,9 +164,9 @@ public class Graph {
 		for (Vertice x : this.vertices) {
 			String aux = "";
 			for (Aresta e : arestas) {
-				if (x.nome.equals(e.origem.nome)) {
-					Vertice v = e.destino;
-					aux += v.nome + " ";
+				if (x.getNome().equals(e.getOrigem().getNome())) {
+					Vertice v = e.getDestino();
+					aux += v.getNome() + " ";
 				}
 			}
 			
@@ -153,7 +179,7 @@ public class Graph {
 			}
 			Collections.sort(aux2);
 			
-			int i = Integer.parseInt(x.nome);
+			int i = Integer.parseInt(x.getNome());
 			for (int j = 1; j < matriz.length; j++) {
 				if(contem(aux2, j)) matriz[i][j] = 1;
 				else matriz[i][j] = 0;
