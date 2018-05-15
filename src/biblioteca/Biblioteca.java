@@ -303,7 +303,9 @@ public class Biblioteca implements IPratica1 {
 					distancia[destinoIndex].vertice = destino;
 					distancia[destinoIndex].peso = distancia[origemIndex].peso+aresta.getPeso();
 					resultado.add(Integer.parseInt(destino.getNome()));
-					if (destino.getNome().equals(v2.getNome())) break;
+					if (Integer.parseInt(destino.getNome()) == Integer.parseInt(v2.getNome())) {
+						break;
+					}
 					fila.add(distancia[destinoIndex]);
 				}
 			}
@@ -313,6 +315,7 @@ public class Biblioteca implements IPratica1 {
 		for (Integer i : resultado) {
 			resposta += " " + i;
 		}
+		resposta += NOVA_LINHA;
 		
 		return resposta;
 	}
@@ -400,27 +403,6 @@ public class Biblioteca implements IPratica1 {
 		this.graph = graph;
 	}
 
-	public static void main(String[] args) {
-
-		Biblioteca biblioteca = new Biblioteca();
-		biblioteca.readGraph("grafo.txt");
-		Vertice v = biblioteca.getGraph().getVertices().get(0);
-
-		System.out.println(biblioteca.BFS(biblioteca.graph, v));
-		System.out.println(biblioteca.DFS(biblioteca.graph, v));
-		System.out.println(biblioteca.connected(biblioteca.getGraph()));
-		System.out.println();
-		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
-		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
-
-		biblioteca.readWeightedGraph("grafoPonderado.txt");
-		
-		System.out.println(biblioteca.mst(biblioteca.graph));
-		
-		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
-		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
-	}
-	
 	public Vertice getVertexByName(int name){
 		String nome = Integer.toString(name);
 		for (Vertice v : this.graph.getVertices()) {
@@ -444,9 +426,9 @@ public class Biblioteca implements IPratica1 {
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 
 		biblioteca.readWeightedGraph("grafoPonderado.txt");
-		System.out.println(biblioteca.graph.getSize());
-		biblioteca.shortestPath(biblioteca.getVertexByName(1), biblioteca.getVertexByName(5));
-		System.out.println();
+		System.out.println(biblioteca.mst(biblioteca.graph));
+
+		System.out.println(biblioteca.shortestPath(biblioteca.getVertexByName(1), biblioteca.getVertexByName(5)));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
 

@@ -10,8 +10,6 @@ import java.util.Collections;
  */
 public class Graph {
 	
-	//private static final String NEW_LINE = System.lineSeparator();
-
 	private ArrayList<Vertice> vertices;
 	private List<Aresta> arestas;
 	private int size;
