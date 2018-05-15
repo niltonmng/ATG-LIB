@@ -30,29 +30,30 @@ public class Aresta implements Comparable<Aresta>{
 		this.peso = peso;
 	}
 
-	Aresta(Vertice origem, Vertice destino) {
+	public Aresta(Vertice origem, Vertice destino) {
 		this.origem = origem;
 		this.destino = destino;
 		this.peso = 0.0;
 	}
 	
-	Aresta(Vertice origem, Vertice destino, double peso) {
+	public Aresta(Vertice origem, Vertice destino, double peso) {
 		this.origem = origem;
 		this.destino = destino;
 		this.peso = peso;
 	}
 	
 	public String toString() {
-		return this.origem.getNome() + " -> " + this.destino.getNome();
+		return this.origem.getNome() + " -> " + this.destino.getNome() + " : " + this.getPeso();
 	}
 
 	@Override
-	public int compareTo(Aresta arg0) {
-		if(this.peso < arg0.getPeso()) {
+	public int compareTo(Aresta a) {
+		if (this.peso < a.getPeso()) {
 			return -1;
-		} else if (this.peso > arg0.getPeso()) {
+		} else if (this.peso > a.getPeso()) {
 			return 1;
-		}
-		return 0;
+		} else {
+			return 0;
+    }
 	}
 }

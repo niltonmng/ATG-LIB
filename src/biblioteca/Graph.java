@@ -84,7 +84,7 @@ public class Graph {
      * Adiciona uma aresta ao grafo.
      */
 	public void addAresta(Vertice o, Vertice d) {
-		
+
 		Aresta fE = new Aresta(o, d);
 		Aresta sE = new Aresta(d, o);
 		this.arestas.add(fE);
@@ -102,7 +102,6 @@ public class Graph {
 		Aresta sE = new Aresta(d, o, weight);
 		this.arestas.add(fE);
 		this.arestas.add(sE);
-		
 		o.addAdj(fE);
 		d.addAdj(sE);
 	}
