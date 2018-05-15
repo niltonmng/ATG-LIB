@@ -1,1 +1,1 @@
-# Prática 1 da disciplina Aplicação de Teoria dos Grafos
+# Prática 1 da disciplina Aplicações de Teoria dos Grafos
