@@ -6,7 +6,8 @@ import java.io.IOException;
 
 public class Input {
     
-    public Graph readGraph(String path) throws IOException {
+    @SuppressWarnings("resource")
+	public Graph readGraph(String path) throws IOException {
     	
     	Graph graph = new Graph();
     	try {
@@ -35,7 +36,8 @@ public class Input {
 		return graph;
 	}
     
-    public Graph readWeightedGraph(String path) throws IOException {
+    @SuppressWarnings("resource")
+	public Graph readWeightedGraph(String path) throws IOException {
 		Graph graph = new Graph();
 		
 		try {

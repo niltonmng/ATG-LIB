@@ -7,7 +7,7 @@ import java.util.Collections;
 
 public class Graph {
 	
-	private static final String NEW_LINE = System.lineSeparator();
+	//private static final String NEW_LINE = System.lineSeparator();
 
 	ArrayList<Vertice> vertices;
 	List<Aresta> arestas;
@@ -58,7 +58,6 @@ public class Graph {
 		return e;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String toStringAL() {
 		
 		Collections.sort(vertices);

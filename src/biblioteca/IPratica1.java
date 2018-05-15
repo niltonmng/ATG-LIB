@@ -66,7 +66,7 @@ public interface IPratica1 {
 	 * @param graph
 	 * @return
 	 */
-	public String SCC(Graph graph);
+	public boolean connected(Graph graph);
 	
 	
 	/**
