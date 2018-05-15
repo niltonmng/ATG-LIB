@@ -1,13 +1,16 @@
 package biblioteca;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vertice implements Comparable<Object>{
 	
-	String nome;
-	boolean visitado;
-
+	private String nome;
+	private List<Aresta> adj;
+	
 	Vertice(String nome) {
 		this.nome = nome;
-		this.visitado = false;
+		this.adj = new ArrayList<Aresta>();
 	}
 	
 	@Override
@@ -15,8 +18,24 @@ public class Vertice implements Comparable<Object>{
 		return nome;
 	}
 	
-	public void setVisitado (boolean visita) {
-		this.visitado = visita;
+	public List<Aresta> getAdj() {
+		return this.adj;
+	}
+	
+	public void addAdj(Aresta e) {
+		this.adj.add(e);
+	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setAdj(List<Aresta> adj) {
+		this.adj = adj;
 	}
 
 	@Override

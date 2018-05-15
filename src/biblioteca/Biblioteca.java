@@ -1,6 +1,7 @@
 package biblioteca;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -8,11 +9,14 @@ import java.util.Queue;
  * Classe que representa a entidade Biblioteca com funcionalidades para um grafo.
  */
 public class Biblioteca implements IPratica1 {
-
+	
+	public static int INF = 100000000;
+	public static String NOVA_LINHA = System.lineSeparator();
+	
 	private Graph graph;
 
 	/**
-     * Mapeia o conteúdo do arquivo para criar um grafo.
+     * Mapeia o conteï¿½do do arquivo para criar um grafo.
      */
 	@Override
 	public boolean readGraph(String path) {
@@ -26,7 +30,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Mapeia o conteúdo do arquivo para criar um grafo com pesos.
+     * Mapeia o conteï¿½do do arquivo para criar um grafo com pesos.
      */
 	@Override
 	public boolean readWeightedGraph(String path) {
@@ -40,7 +44,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o número de vértices do Grafo.
+     * Retorna o nï¿½mero de vï¿½rtices do Grafo.
      */
 	@Override
 	public int getVertexNumber(Graph graph) {
@@ -48,7 +52,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o número de arestas do Grafo.
+     * Retorna o nï¿½mero de arestas do Grafo.
      */
 	@Override
 	public int getEdgeNumber(Graph graph) {
@@ -56,7 +60,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o resultado do cálculo do grau médio do grafo.
+     * Retorna o resultado do cï¿½lculo do grau mï¿½dio do grafo.
      */
 	@Override
 	public float getMeanEdge(Graph graph) {
@@ -64,7 +68,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna o uma string com a representação do grafo de acordo com o tipo especificado.
+     * Retorna o uma string com a representaï¿½ï¿½o do grafo de acordo com o tipo especificado.
      */
 	@Override
 	public String graphRepresentation(Graph graph, RepresentationType type) {
@@ -77,83 +81,168 @@ public class Biblioteca implements IPratica1 {
 	@Override
 	public String BFS(Graph graph, Vertice v) {
 		// TODO Auto-generated method stub
-		return null;
+		int size = graph.getSize();
+		
+        int[] distancia = new int[size];
+        int[] pais = new int[size];
+        
+        fillDist(distancia);
+        fillPais(pais);
+        
+        bfs(v, distancia, pais);
+        
+        String resposta = "";
+        for (int i = 1; i < size; i++) {
+        	resposta += i + " - " + distancia[i] + " ";
+        	if (pais[i] == -1) {
+        		resposta += "-";
+        	} else {
+        		resposta += pais[i];
+        	}
+        	resposta += NOVA_LINHA;
+        }
+		return resposta;
 	}
+	
+	public int[] bfs(Vertice v, int[] distancia, int[] pais) {
+        Queue<Vertice> fila = new LinkedList<>();
+        
+        Vertice raiz = graph.getVertices().get(0);
+    	int raizIndex = Integer.parseInt(raiz.toString());
+    	
+    	distancia[raizIndex] = 0;
+    	
+        fila.add(raiz);
 
+        while(!fila.isEmpty()) {
+            Vertice u = fila.remove();
+
+            for (Aresta aresta : u.getAdj()) {
+            	Vertice vertice = aresta.getDestino();
+
+            	int uIndex = Integer.parseInt(u.getNome());
+            	int verticeIndex = Integer.parseInt(vertice.getNome());
+            	
+            	if(distancia[uIndex]+1 < distancia[verticeIndex]){
+            		distancia[verticeIndex] = distancia[uIndex]+1;
+            		pais[verticeIndex] = uIndex;
+            		fila.add(vertice);
+            	}
+            }
+        }
+        
+        System.out.println(Arrays.toString(distancia));
+        System.out.println(Arrays.toString(pais));
+        return distancia;
+	}
+	
+	private void fillPais(int[] pais) {
+		for (int i = 0; i < pais.length; i++) {
+			pais[i] = -1;
+		}
+	}
+	
+	private void fillDist(int[] dist) {
+		for (int i = 0; i < dist.length; i++) {
+			dist[i] = INF;
+		}
+	}
+	
 	/**
      * Busca em profundidade de um elemento no grafo.
      */
 	@Override
 	public String DFS(Graph graph, Vertice v) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		int size = graph.getSize();
+		int[] visitado = new int[size];
+        int[] pais = new int[size];
+		int[] nivel = new int[size];
 
-	/**
-     * Verifica se o grafo é conexo.
-     * De um vértice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
-     */
-	@Override
-	public boolean connected(Graph graph) {
-        Queue<Vertice> fila = new LinkedList<>();
-        
-        int verticesVisitados = 0;
-        
-        Vertice raiz = graph.vertices.get(0);
-
-        raiz.setVisitado(true);
-        fila.add(raiz);
-
-        while(!fila.isEmpty()) {
-
-            Vertice pai = fila.remove();
-            Vertice filho = null;
-            
-            boolean nivelAtual = false;
-            
-            while ((filho = filhoNaoVisitado(graph, pai)) != null) {
-            	
-            	if(!nivelAtual){
-                    nivelAtual = true;
-                    verticesVisitados++;
-                }
-            	
-            	filho.setVisitado(true);
-                fila.add(filho);
-            }
+		fillVis(visitado);
+		fillPais(pais);
+		fillNivel(nivel);
+		
+		this.dfs(v, visitado, pais, nivel, 0);
+		
+		String resposta = "";
+        for (int i = 1; i < size; i++) {
+        	resposta += i + " - " + nivel[i] + " ";
+        	if (pais[i] == -1) {
+        		resposta += "-";
+        	} else {
+        		resposta += pais[i];
+        	}
+        	resposta += NOVA_LINHA;
         }
-        limpaVisitas(graph);
-        return (verticesVisitados == graph.vertices.size());
+		
+		return resposta;
 	}
+	
+	private void fillVis(int[] vis) {
+		for (int i = 0; i < vis.length; i++) {
+			vis[i] = 0;
+		}
+	}
+	
+	private void fillNivel(int[] nivel) {
+		for (int i = 0; i < nivel.length; i++) {
+			nivel[i] = 0;
+		}
+	}
+	
+	private void dfs(Vertice v, int[] visitado, int[] pais, int[] nivel, int nivelValor) {
+		int verticeIndex = Integer.parseInt(v.getNome());
+		
+		if (visitado[verticeIndex] == 1) {
+			return;
+		}
+		
+		visitado[verticeIndex] = 1;
+		nivel[verticeIndex] = nivelValor;
 
-	/**
-     * Limpa as visitas feitas nos vértice.
-     */
-	private void limpaVisitas(Graph graph) {
-		for (Vertice vertice : graph.vertices) {
-			vertice.visitado = false;
+		for (Aresta e : v.getAdj()) {
+			pais[Integer.parseInt(e.getDestino().getNome())] = Integer.parseInt(v.getNome());
+			dfs(e.getDestino(), visitado, pais, nivel, nivelValor+1);
+		}
+	}
+	
+	private void connected(Vertice v, int[] visitado) {
+		int verticeIndex = Integer.parseInt(v.getNome());
+		
+		if (visitado[verticeIndex] == 1) {
+			return;
+		}
+		
+		visitado[verticeIndex] = 1;
+
+		for (Aresta e : v.getAdj()) {
+			connected(e.getDestino(), visitado);
 		}
 	}
 	
 	/**
-     * Verifica e retorna um filho não visitado do pai.
+     * Verifica se o grafo ï¿½ conexo.
+     * De um vï¿½rtice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
      */
-	private Vertice filhoNaoVisitado(Graph graph, Vertice pai) {
-		for (Aresta aresta : graph.arestas) {
-			Vertice vertice1 = aresta.origem;
-			Vertice vertice2 = aresta.destino;
+	@Override
+	public boolean connected(Graph graph) {
+		Vertice v = graph.getVertices().get(0);
+		int size = graph.getSize();
+		
+        int[] visitado = new int[size];
 
-			if (vertice1.equals(pai) && !(vertice2.visitado)) {
-				return vertice2;
-			} else if (vertice2.equals(pai) && !(vertice1.visitado)) {
-				return vertice1;
-			}
-		}
-		return null;
+        this.connected(v, visitado);
+        
+        for (int i = 1; i < size; i++) {
+        	if (visitado[i] == 0) {
+        		return false;
+        	}
+        }
+        return true;
 	}
 
 	/**
-     * Retorna o menor caminho de um vértice 1 para um vértice 2.
+     * Retorna o menor caminho de um vï¿½rtice 1 para um vï¿½rtice 2.
      */
 	@Override
 	public String shortestPath(Vertice v1, Vertice v2) {
@@ -162,7 +251,7 @@ public class Biblioteca implements IPratica1 {
 	}
 
 	/**
-     * Retorna a árvore geradora mínima de um grafo.
+     * Retorna a ï¿½rvore geradora mï¿½nima de um grafo.
      */
 	@Override
 	public String mst(Graph graph) {
@@ -181,8 +270,11 @@ public class Biblioteca implements IPratica1 {
 	public static void main(String[] args) {
 
 		Biblioteca biblioteca = new Biblioteca();
-
 		biblioteca.readGraph("grafo.txt");
+		Vertice v = biblioteca.getGraph().getVertices().get(0);
+
+		System.out.println(biblioteca.BFS(biblioteca.graph, v));
+		System.out.println(biblioteca.DFS(biblioteca.graph, v));
 		System.out.println(biblioteca.connected(biblioteca.getGraph()));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AL));
 		System.out.println(biblioteca.graphRepresentation(biblioteca.getGraph(), RepresentationType.AM));
