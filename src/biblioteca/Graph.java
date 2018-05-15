@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Classe que representa a entidade Grafo.
+ */
 public class Graph {
 	
 	//private static final String NEW_LINE = System.lineSeparator();
@@ -17,6 +20,9 @@ public class Graph {
 		this.arestas = new ArrayList<Aresta>();
 	}
 
+	/**
+     * Adiciona um vértice ao grafo.
+     */
 	Vertice addVertice(String nome) {
 		Vertice v = new Vertice(nome);
 		if (! this.contemVertice(v)) {
@@ -27,6 +33,9 @@ public class Graph {
 		return null;
 	}
 
+	/**
+     * Verifica se o vértice a ser inserido no grafo já existe.
+     */
 	private boolean contemVertice(Vertice v) {
 		for (Vertice ver : vertices) {
 			if (ver.nome.equals(v.nome)) {
@@ -36,6 +45,9 @@ public class Graph {
 		return false;
 	}
 
+	/**
+     * Adiciona uma aresta ao grafo.
+     */
 	Aresta addAresta(String o, String d) {
 		
 		Vertice origem = new Vertice(o);
@@ -47,6 +59,9 @@ public class Graph {
 		return e;
 	}
 
+	/**
+     * Adiciona uma aresta com peso ao grafo.
+     */
 	Aresta addAresta(String o, String d, double weight) {
 		
 		Vertice origem = new Vertice(o);
@@ -58,6 +73,9 @@ public class Graph {
 		return e;
 	}
 	
+	/**
+     * Retorna grafo em forma de lista de adjacência.
+     */
 	public String toStringAL() {
 		
 		Collections.sort(vertices);
@@ -79,6 +97,9 @@ public class Graph {
 		return saida;
 	}
 	
+	/**
+     * Retorna o vértice de maior valor no grafo.
+     */
 	private int maiorVertice(){
 		int maior = 0;
 		for (int i = 0; i < vertices.size(); i++) {
@@ -87,11 +108,17 @@ public class Graph {
 		return maior;
 	}
 	
+	/**
+     * Verifica se valor está presente na lista.
+     */
 	private boolean contem(ArrayList<Integer> lista, int valor){
 		if(lista.contains(valor)) return true;
 		return false;
 	}
 
+	/**
+     * Retorna grafo em forma de matriz de adjacência.
+     */
 	public String toStringAM() {
 		String saida = "";
 		int[][] matriz = new int[this.maiorVertice()+1][this.maiorVertice()+1];
@@ -141,10 +168,16 @@ public class Graph {
 		return saida;
 	}
 
+	/**
+     * Retorna o número de vértices do Grafo.
+     */
 	public int getVertexNumber() {
 		return this.vertices.size();
 	}
 
+	/**
+     * Retorna o número de arestas do Grafo.
+     */
 	public int getEdgeNumber() {
 		return this.arestas.size();
 	}

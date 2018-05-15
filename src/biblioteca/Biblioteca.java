@@ -4,10 +4,16 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Classe que representa a entidade Biblioteca com funcionalidades para um grafo.
+ */
 public class Biblioteca implements IPratica1 {
 
 	private Graph graph;
 
+	/**
+     * Mapeia o conteúdo do arquivo para criar um grafo.
+     */
 	@Override
 	public boolean readGraph(String path) {
 		try {
@@ -19,6 +25,9 @@ public class Biblioteca implements IPratica1 {
 		return true;
 	}
 
+	/**
+     * Mapeia o conteúdo do arquivo para criar um grafo com pesos.
+     */
 	@Override
 	public boolean readWeightedGraph(String path) {
 		try {
@@ -30,38 +39,60 @@ public class Biblioteca implements IPratica1 {
 		return true;
 	}
 
+	/**
+     * Retorna o número de vértices do Grafo.
+     */
 	@Override
 	public int getVertexNumber(Graph graph) {
 		return graph.getVertexNumber();
 	}
 
+	/**
+     * Retorna o número de arestas do Grafo.
+     */
 	@Override
 	public int getEdgeNumber(Graph graph) {
 		return graph.getEdgeNumber();
 	}
 
+	/**
+     * Retorna o resultado do cálculo do grau médio do grafo.
+     */
 	@Override
 	public float getMeanEdge(Graph graph) {
 		return 2 * this.getEdgeNumber(graph) / this.getVertexNumber(graph);
 	}
 
+	/**
+     * Retorna o uma string com a representação do grafo de acordo com o tipo especificado.
+     */
 	@Override
 	public String graphRepresentation(Graph graph, RepresentationType type) {
 		return graph.graphRepresentation(type);
 	}
 
+	/**
+     * Busca em largura de um elemento no grafo.
+     */
 	@Override
 	public String BFS(Graph graph, Vertice v) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+     * Busca em profundidade de um elemento no grafo.
+     */
 	@Override
 	public String DFS(Graph graph, Vertice v) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+     * Verifica se o grafo é conexo.
+     * De um vértice do grafo deve haver um caminho para todos os outros para o mesmo ser conexo.
+     */
 	@Override
 	public boolean connected(Graph graph) {
         Queue<Vertice> fila = new LinkedList<>();
@@ -95,12 +126,18 @@ public class Biblioteca implements IPratica1 {
         return (verticesVisitados == graph.vertices.size());
 	}
 
+	/**
+     * Limpa as visitas feitas nos vértice.
+     */
 	private void limpaVisitas(Graph graph) {
 		for (Vertice vertice : graph.vertices) {
 			vertice.visitado = false;
 		}
 	}
 	
+	/**
+     * Verifica e retorna um filho não visitado do pai.
+     */
 	private Vertice filhoNaoVisitado(Graph graph, Vertice pai) {
 		for (Aresta aresta : graph.arestas) {
 			Vertice vertice1 = aresta.origem;
@@ -115,12 +152,18 @@ public class Biblioteca implements IPratica1 {
 		return null;
 	}
 
+	/**
+     * Retorna o menor caminho de um vértice 1 para um vértice 2.
+     */
 	@Override
 	public String shortestPath(Vertice v1, Vertice v2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+     * Retorna a árvore geradora mínima de um grafo.
+     */
 	@Override
 	public String mst(Graph graph) {
 		// TODO Auto-generated method stub
